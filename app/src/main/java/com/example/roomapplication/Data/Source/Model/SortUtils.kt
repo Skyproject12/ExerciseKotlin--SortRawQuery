@@ -7,7 +7,7 @@ object SortUtils {
     const val OLDEST = "Oldest"
     // make fun rawquery
     fun getSorteredQuery(filter: String): SimpleSQLiteQuery {
-        val simpleQuery = StringBuilder().append("SELECT * FROM note")
+        val simpleQuery = StringBuilder().append("SELECT * FROM note ")
         if (filter == NEWEST) {
             simpleQuery.append("ORDER BY id DESC")
         } else if (filter == OLDEST) {

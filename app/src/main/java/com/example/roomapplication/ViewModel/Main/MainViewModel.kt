@@ -12,7 +12,7 @@ import com.example.roomapplication.Data.Source.Model.NoteRepository
 class MainViewModel(application: Application) : ViewModel() {
     val mNoteRepository: NoteRepository = NoteRepository(application)
     // get All note from noteRepository
-    fun getAllNotes(): LiveData<PagedList<Note>> =
-        LivePagedListBuilder(mNoteRepository.getAllNotes(), 20).build()
+    fun getAllNotes(sort : String): LiveData<PagedList<Note>> =
+        LivePagedListBuilder(mNoteRepository.getAllNotes(sort), 20).build()
 
 }

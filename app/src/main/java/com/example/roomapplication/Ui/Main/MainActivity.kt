@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.roomapplication.Data.Source.Model.Entity.Note
+import com.example.roomapplication.Data.Source.Model.SortUtils
 import com.example.roomapplication.R
 import com.example.roomapplication.Ui.Insert.InsertActivity
 import com.example.roomapplication.ViewModel.Main.MainViewModel
@@ -27,12 +28,13 @@ class MainActivity : AppCompatActivity() {
         // initial view model
         mainViewModel = obtainViewModel(this@MainActivity)
         // set data use view model
-        mainViewModel.getAllNotes().observe(this, Observer<PagedList<Note>> { noteList ->
-            if (noteList != null) {
-                // select from database , set adapter with data android
-                adapter.submitList(noteList)
-            }
-        })
+        mainViewModel.getAllNotes(SortUtils.NEWEST)
+            .observe(this, Observer<PagedList<Note>> { noteList ->
+                if (noteList != null) {
+                    // select from database , set adapter with data android
+                    adapter.submitList(noteList)
+                }
+            })
         // set adapter
         adapter = MainListAdapter(this@MainActivity)
         rv_notes.layoutManager = LinearLayoutManager(this)
