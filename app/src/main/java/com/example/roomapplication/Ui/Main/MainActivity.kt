@@ -3,6 +3,8 @@ package com.example.roomapplication.Ui.Main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
@@ -59,12 +61,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    private val noteObserver = Observer<List<Note>> { noteList ->
-//        if (noteList != null) {
-//            // select from database , set adapter with thE data android
-//            adapter.setListNote(noteList)
-//        }
-//    }
+    private val noteObserver = Observer<PagedList<Note>> { noteList ->
+        if (noteList != null) {
+            // select from database , set adapter with thE data android
+            adapter.submitList(noteList)
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -88,5 +90,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSnackBarMessage(message: String) {
         Snackbar.make(rv_notes, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var sort = ""
+        // ketika menu yang dipilih adalah
+        when (item.itemId) {
+            // ketika menu baru
+            R.id.action_new -> sort = SortUtils.NEWEST
+            // ketika menu lama
+            R.id.action_old -> sort = SortUtils.OLDEST
+        }
+        // tampilkan soeting berdasarkan menu yang di klik
+        mainViewModel.getAllNotes(sort).observe(this, noteObserver)
+        // set cheked pada menu true
+        item.setChecked(true)
+        return super.onOptionsItemSelected(item)
     }
 }
